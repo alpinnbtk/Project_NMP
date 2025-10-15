@@ -55,6 +55,16 @@
                 app:layout_constraintStart_toEndOf="@+id/imgDetail"
                 app:layout_constraintTop_toBottomOf="@+id/txtName_Detail" />
 
+            <TextView
+                android:id="@+id/txtJurusanDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:text="Informatika"
+                app:layout_constraintStart_toEndOf="@+id/imgDetail"
+                app:layout_constraintTop_toBottomOf="@+id/txtNRP_Detail" />
+
             <Spinner
                 android:id="@+id/spinnerTampilan"
                 style="@android:style/Widget.Spinner"

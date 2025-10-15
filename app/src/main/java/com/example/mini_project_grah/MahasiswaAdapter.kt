@@ -1,5 +1,6 @@
 package com.example.mini_project_grah
 
+import android.content.Intent
 import com.example.mini_project_grah.databinding.CardMahasiswaBinding
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -27,6 +28,13 @@ class MahasiswaAdapter() : RecyclerView.Adapter<MahasiswaAdapter.MahasiswaViewHo
         holder.binding.txtNRP.text =dataMahasiswa.arrMahasiswa[position].nrp
         holder.binding.txtJurusan.text = dataMahasiswa.arrMahasiswa[position].jurusan
 
+        holder.binding.cardView.setOnClickListener {
+            val intent = Intent(holder.itemView.context, DetailActivity::class.java)
+            intent.putExtra("question_index", position)
+            holder.itemView.context.startActivity(intent)
+        }
+
+
     }
 
     override fun getItemCount(): Int {
@@ -34,6 +42,8 @@ class MahasiswaAdapter() : RecyclerView.Adapter<MahasiswaAdapter.MahasiswaViewHo
     }
 
     class MahasiswaViewHolder(val binding: CardMahasiswaBinding):RecyclerView.ViewHolder(binding.root)
+
+
 
 
 
