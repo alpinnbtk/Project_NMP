@@ -43,24 +43,49 @@ class DetailActivity : AppCompatActivity() {
         binding.spinnerTampilan.adapter = adapter
 
         val index = intent.getIntExtra("question_index", 0)
-        binding.txtNameDetail.setText("Nama : " + dataMahasiswa.arrMahasiswa[index].nama)
+        binding.txtNameDetail.setText(dataMahasiswa.arrMahasiswa[index].nama)
         binding.txtNRPDetail.setText("NRP : " + dataMahasiswa.arrMahasiswa[index].nrp)
         binding.txtJurusanDetail.setText("Jurusan : " + dataMahasiswa.arrMahasiswa[index].jurusan)
+
+        if (dataMahasiswa.arrMahasiswa[index].isFriend) {
+            binding.btnRequest.isEnabled = false
+            binding.btnRequest.text = "Friend Added"
+        }
 
         binding.imgDetail.setImageResource(dataMahasiswa.arrMahasiswa[index].imageId)
         if(dataMahasiswa.arrMahasiswa[index].jurusan=="DSAI") {
             binding.rdoDSAI.isChecked = true
+            binding.rdoNCS.isEnabled = false
+            binding.rdoDMT.isEnabled = false
+            binding.rdoGD.isEnabled = false
+            binding.rdoIMES.isEnabled = false
         } else if(dataMahasiswa.arrMahasiswa[index].jurusan=="NCS")  {
             binding.rdoNCS.isChecked = true
+            binding.rdoDSAI.isEnabled = false
+            binding.rdoDMT.isEnabled = false
+            binding.rdoGD.isEnabled = false
+            binding.rdoIMES.isEnabled = false
         }
         else if(dataMahasiswa.arrMahasiswa[index].jurusan=="IMES")  {
             binding.rdoIMES.isChecked = true
+            binding.rdoNCS.isEnabled = false
+            binding.rdoDMT.isEnabled = false
+            binding.rdoGD.isEnabled = false
+            binding.rdoDSAI.isEnabled = false
         }
-        else if(dataMahasiswa.arrMahasiswa[index].jurusan=="NCS")  {
+        else if(dataMahasiswa.arrMahasiswa[index].jurusan=="DMT")  {
             binding.rdoDMT.isChecked = true
+            binding.rdoNCS.isEnabled = false
+            binding.rdoDSAI.isEnabled = false
+            binding.rdoGD.isEnabled = false
+            binding.rdoIMES.isEnabled = false
         }
         else  {
             binding.rdoGD.isChecked = true
+            binding.rdoNCS.isEnabled = false
+            binding.rdoDMT.isEnabled = false
+            binding.rdoDSAI.isEnabled = false
+            binding.rdoIMES.isEnabled = false
         }
 
         binding.spinnerTampilan.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -74,23 +99,26 @@ class DetailActivity : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
 
-        val btnRequestFriend = findViewById<Button>(R.id.btnRequest)
 
-        btnRequestFriend.setOnClickListener {
-            FriendData.totalFriend++
+        binding.btnRequest.setOnClickListener {
+            if (!dataMahasiswa.arrMahasiswa[index].isFriend) {
+                FriendData.totalFriend++
+                dataMahasiswa.arrMahasiswa[index].isFriend = true
 
-            AlertDialog.Builder(this)
-                .setTitle("Friend Request")
-                .setMessage(
-                    "Sukses menambah " + dataMahasiswa.arrMahasiswa[index].nama + " sebagai friend.\n" +
-                            "Jumlah friend anda saat ini: ${FriendData.totalFriend}"
-                )
-                .setPositiveButton("OK", null)
-                .show()
+                AlertDialog.Builder(this)
+                    .setTitle("Friend Request")
+                    .setMessage(
+                        "Sukses menambah " + dataMahasiswa.arrMahasiswa[index].nama + " sebagai friend.\n" +
+                                "Jumlah friend anda saat ini: ${FriendData.totalFriend}"
+                    )
+                    .setPositiveButton("OK", null)
+                    .show()
 
-            btnRequestFriend.isEnabled = false
-            btnRequestFriend.text = "Friend Added"
+                binding.btnRequest.isEnabled = false
+                binding.btnRequest.text = "Friend Added"
+            }
         }
+
     }
 
 
