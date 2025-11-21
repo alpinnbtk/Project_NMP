@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/itemHome"
+        android:icon="@drawable/home"
+        android:title="Home" />
+    <item
+        android:id="@+id/itemMyFriend"
+        android:icon="@drawable/friends"
+        android:title="My Friend" />
+    <item
+        android:id="@+id/itemSetting"
+        android:icon="@drawable/settings"
+        android:title="Setting" />
+</menu>
