@@ -1,0 +1,48 @@
+Generate Table Student :
+CREATE TABLE student (
+
+    nrp VARCHAR(255) PRIMARY KEY,
+
+    nama VARCHAR(255) NOT NULL,
+
+    email VARCHAR(255) NOT NULL,
+
+    program ENUM('DSAI', 'NCS', 'IMES', 'DMT', 'GD') NOT NULL,
+
+    about_me VARCHAR(510),
+
+    my_course VARCHAR(510),
+
+    my_experiences VARCHAR(510),
+
+    photo_url VARCHAR(510)
+
+) ENGINE=InnoDB
+
+DEFAULT CHARSET=utf8mb4
+
+COLLATE=utf8mb4_general_ci;
+
+
+
+Generate Table My_Friends:
+CREATE TABLE my_friends (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    nrp VARCHAR(255) NOT NULL,
+
+ 
+
+    CONSTRAINT fk_my_friends_student
+
+        FOREIGN KEY (nrp)
+
+        REFERENCES student(nrp)
+
+        ON UPDATE CASCADE
+
+        ON DELETE CASCADE
+
+) ENGINE=InnoDB;
+
