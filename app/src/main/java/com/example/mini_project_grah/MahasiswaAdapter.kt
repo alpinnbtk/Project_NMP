@@ -1,50 +1,58 @@
 package com.example.mini_project_grah
 
 import android.content.Intent
-import com.example.mini_project_grah.databinding.CardMahasiswaBinding
+import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewbinding.ViewBinding
+import com.android.volley.toolbox.ImageRequest
+import com.android.volley.toolbox.Volley
+import com.example.mini_project_grah.databinding.CardMahasiswaBinding
 
+class MahasiswaAdapter(
+    private val list: ArrayList<mahasiswa>
+) : RecyclerView.Adapter<MahasiswaAdapter.MahasiswaViewHolder>() {
 
-class MahasiswaAdapter() : RecyclerView.Adapter<MahasiswaAdapter.MahasiswaViewHolder>() {
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): MahasiswaViewHolder {
-        val binding = CardMahasiswaBinding.inflate(LayoutInflater.from(parent.context),
-            parent,false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MahasiswaViewHolder {
+        val binding = CardMahasiswaBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
         return MahasiswaViewHolder(binding)
-
     }
 
-    override fun onBindViewHolder(
-        holder: MahasiswaViewHolder,
-        position: Int
-    ) {
-        holder.binding.imgMahasiswa.setImageResource(dataMahasiswa.arrMahasiswa[position].imageId)
-        holder.binding.txtNama.text = dataMahasiswa.arrMahasiswa[position].nama
-        holder.binding.txtNRP.text =dataMahasiswa.arrMahasiswa[position].nrp
-        holder.binding.txtJurusan.text = dataMahasiswa.arrMahasiswa[position].jurusan
+    override fun onBindViewHolder(holder: MahasiswaViewHolder, position: Int) {
+        val mhs = list[position]
+
+        holder.binding.txtNama.text = mhs.nama
+        holder.binding.txtNRP.text = mhs.nrp
+        holder.binding.txtJurusan.text = mhs.jurusan
+
+        val imageUrl = "http://10.0.2.2/project_nmp/" + mhs.photoUrl
+
+        val imageRequest = ImageRequest(
+            imageUrl,
+            { bitmap: Bitmap ->
+                holder.binding.imgMahasiswa.setImageBitmap(bitmap)
+            },
+            0,
+            0,
+            null,
+            { holder.binding.imgMahasiswa.setImageResource(R.drawable.ic_launcher_background) }
+        )
+
+        Volley.newRequestQueue(holder.itemView.context).add(imageRequest)
 
         holder.binding.cardView.setOnClickListener {
             val intent = Intent(holder.itemView.context, DetailActivity::class.java)
-            intent.putExtra("question_index", position)
+            intent.putExtra("nrp", mhs.nrp)
             holder.itemView.context.startActivity(intent)
         }
-
-
     }
 
-    override fun getItemCount(): Int {
-        return dataMahasiswa.arrMahasiswa.size
-    }
+    override fun getItemCount() = list.size
 
-    class MahasiswaViewHolder(val binding: CardMahasiswaBinding):RecyclerView.ViewHolder(binding.root)
-
-
-
-
-
+    class MahasiswaViewHolder(val binding: CardMahasiswaBinding)
+        : RecyclerView.ViewHolder(binding.root)
 }

@@ -11,17 +11,29 @@ import com.example.mini_project_grah.databinding.ActivityMahasiswaListBinding
 class MahasiswaListActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMahasiswaListBinding
+    private lateinit var adapter: MahasiswaAdapter
+    private val listMahasiswa = ArrayList<mahasiswa>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_mahasiswa_list)
 
         binding = ActivityMahasiswaListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.recMahasiswa.layoutManager = LinearLayoutManager(this)
-        binding.recMahasiswa.setHasFixedSize(true)
-        binding.recMahasiswa.adapter = MahasiswaAdapter()
+        adapter = MahasiswaAdapter(listMahasiswa)
 
+        binding.recMahasiswa.apply {
+            layoutManager = LinearLayoutManager(this@MahasiswaListActivity)
+            setHasFixedSize(true)
+            adapter = this@MahasiswaListActivity.adapter
+        }
+
+        loadMahasiswa() // kalau mau ambil dari DB
+    }
+
+    private fun loadMahasiswa() {
+        // BISA COPY dari HomeFragment (Volley JSON)
+        // listMahasiswa.add(...)
+        // adapter.notifyDataSetChanged()
     }
 }
