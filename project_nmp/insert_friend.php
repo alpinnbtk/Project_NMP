@@ -3,44 +3,51 @@
     header("Access-Control-Allow-Headers: *");
     header("Content-Type: application/json");
 
-    try {
-        $c = new mysqli("localhost", "root", "", "project_nmp");
-    } catch (Exception $e) {
-        echo json_encode([
-            "result" => "ERROR",
-            "message" => $e->getMessage()
-        ]);
-        die();
-    }
-
+    $c = new mysqli("localhost", "root", "", "project_nmp");
     $c->set_charset("UTF8");
 
-    $nrp = $_POST['nrp'] ?? '';
+    $nrp = $_GET['nrp'] ?? '';
 
     if ($nrp == '') {
         echo json_encode([
             "result" => "ERROR",
-            "message" => "NRP tidak boleh kosong!"
+            "message" => "NRP tidak boleh kosong"
         ]);
-        die();
+        exit();
     }
 
-    $sql = "INSERT INTO my_friends (nrp) VALUES (?)";
-    $stmt = $c->prepare($sql);
-    $stmt->bind_param("s", $nrp);
+    $check = $c->prepare("SELECT COUNT(*) FROM my_friends WHERE nrp = ?");
+    $check->bind_param("s", $nrp);
+    $check->execute();
+    $check->bind_result($exists);
+    $check->fetch();
+    $check->close();
 
-    if ($stmt->execute()) {
+    if ($exists > 0) {
+        $count = $c->query("SELECT COUNT(*) AS total FROM my_friends");
+        $row = $count->fetch_assoc();
+
         echo json_encode([
             "result" => "SUCCESS",
-            "message" => "Data berhasil ditambahkan!"
+            "already_friend" => true,
+            "total_friend" => (int)$row['total']
         ]);
-    } else {
-        echo json_encode([
-            "result" => "ERROR",
-            "message" => $stmt->error
-        ]);
+        exit();
     }
 
-    $stmt->close();
+    $insert = $c->prepare("INSERT INTO my_friends (nrp) VALUES (?)");
+    $insert->bind_param("s", $nrp);
+    $insert->execute();
+    $insert->close();
+
+    $count = $c->query("SELECT COUNT(*) AS total FROM my_friends");
+    $row = $count->fetch_assoc();
+
+    echo json_encode([
+        "result" => "SUCCESS",
+        "already_friend" => false,
+        "total_friend" => (int)$row['total']
+    ]);
+
     $c->close();
 ?>

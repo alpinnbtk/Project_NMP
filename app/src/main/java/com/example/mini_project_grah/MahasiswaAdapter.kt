@@ -10,26 +10,27 @@ import com.android.volley.toolbox.Volley
 import com.example.mini_project_grah.databinding.CardMahasiswaBinding
 
 class MahasiswaAdapter(
-    private val list: ArrayList<mahasiswa>
+    private val listMahasiswa: ArrayList<mahasiswa>
 ) : RecyclerView.Adapter<MahasiswaAdapter.MahasiswaViewHolder>() {
+
+    inner class MahasiswaViewHolder(val binding: CardMahasiswaBinding)
+        : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MahasiswaViewHolder {
         val binding = CardMahasiswaBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
+            LayoutInflater.from(parent.context), parent, false
         )
         return MahasiswaViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: MahasiswaViewHolder, position: Int) {
-        val mhs = list[position]
+        val mhs = listMahasiswa[position]
 
         holder.binding.txtNama.text = mhs.nama
         holder.binding.txtNRP.text = mhs.nrp
         holder.binding.txtJurusan.text = mhs.jurusan
 
-        val imageUrl = "http://10.0.2.2/project_nmp/" + mhs.photoUrl
+        val imageUrl = "http://10.0.2.2/project_nmp/${mhs.photoUrl}"
 
         val imageRequest = ImageRequest(
             imageUrl,
@@ -39,7 +40,9 @@ class MahasiswaAdapter(
             0,
             0,
             null,
-            { holder.binding.imgMahasiswa.setImageResource(R.drawable.ic_launcher_background) }
+            { error ->
+                error.printStackTrace()
+            }
         )
 
         Volley.newRequestQueue(holder.itemView.context).add(imageRequest)
@@ -51,8 +54,5 @@ class MahasiswaAdapter(
         }
     }
 
-    override fun getItemCount() = list.size
-
-    class MahasiswaViewHolder(val binding: CardMahasiswaBinding)
-        : RecyclerView.ViewHolder(binding.root)
+    override fun getItemCount() = listMahasiswa.size
 }

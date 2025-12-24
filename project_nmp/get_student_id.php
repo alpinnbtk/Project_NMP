@@ -1,30 +1,27 @@
 <?php
     header("Access-Control-Allow-Origin: *");
-	
-    try{
-        $c = new mysqli("localhost", "root", "", "project_nmp");
-    } catch(Exception $e) {
-        $info = array(
-            "result"  => "Error",
-            "message" => $e->getMessage()
-        );
-        echo json_encode($info);
-        die();
+    header("Access-Control-Allow-Headers: *");
+
+    $conn = new mysqli("localhost","root","","project_nmp");
+
+    $nrp = $_GET['nrp'] ?? '';
+
+    $stmt = $conn->prepare("
+        SELECT * FROM student
+        WHERE nrp = ?
+    ");
+    $stmt->bind_param("s", $nrp);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    $data = [];
+
+    while($row = $result->fetch_assoc()){
+        $data[] = $row;
     }
 
-    $c->set_charset("UTF8");
-	$sql = "SELECT * FROM student";
-    $stmt = $c->prepare($sql);
-    $stmt->execute();
-    $result =$stmt->get_result();
-        $array = array();
-    if ($result->num_rows > 0) {
-            while ($row = $result -> fetch_assoc()) {
-                $array[] = $row;
-            }
-            echo json_encode(array('result' => 'SUCCESS', 'data' => $array));
-        } else {
-            echo json_encode(array('result'=> 'ERROR', 'message' => 'No data found'));
-            die();
-        }
+    echo json_encode([
+        "result" => "SUCCESS",
+        "data" => $data
+    ]);
 ?>
