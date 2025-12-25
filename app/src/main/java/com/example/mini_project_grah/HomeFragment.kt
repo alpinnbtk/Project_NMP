@@ -30,7 +30,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = MahasiswaAdapter(listMahasiswa)
+        adapter = MahasiswaAdapter(listMahasiswa, false)
 
         binding.recMahasiswa.apply {
             layoutManager = LinearLayoutManager(requireContext())

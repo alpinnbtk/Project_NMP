@@ -3,6 +3,7 @@ package com.example.mini_project_grah
 import android.content.Intent
 import android.graphics.Bitmap
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.toolbox.ImageRequest
@@ -10,7 +11,8 @@ import com.android.volley.toolbox.Volley
 import com.example.mini_project_grah.databinding.CardMahasiswaBinding
 
 class MahasiswaAdapter(
-    private val listMahasiswa: ArrayList<mahasiswa>
+    private val listMahasiswa: ArrayList<mahasiswa>,
+    private val showEmail: Boolean = false
 ) : RecyclerView.Adapter<MahasiswaAdapter.MahasiswaViewHolder>() {
 
     inner class MahasiswaViewHolder(val binding: CardMahasiswaBinding)
@@ -51,6 +53,12 @@ class MahasiswaAdapter(
             val intent = Intent(holder.itemView.context, DetailActivity::class.java)
             intent.putExtra("nrp", mhs.nrp)
             holder.itemView.context.startActivity(intent)
+        }
+
+        if (showEmail) {
+            holder.binding.btnEmail.visibility = View.VISIBLE
+        } else {
+            holder.binding.btnEmail.visibility = View.GONE
         }
     }
 

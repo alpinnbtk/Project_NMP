@@ -16,6 +16,7 @@
         exit();
     }
 
+    /* 1. CEK SUDAH FRIEND ATAU BELUM */
     $check = $c->prepare("SELECT COUNT(*) FROM my_friends WHERE nrp = ?");
     $check->bind_param("s", $nrp);
     $check->execute();
@@ -24,6 +25,7 @@
     $check->close();
 
     if ($exists > 0) {
+        // hitung total friend
         $count = $c->query("SELECT COUNT(*) AS total FROM my_friends");
         $row = $count->fetch_assoc();
 
@@ -35,11 +37,13 @@
         exit();
     }
 
+    /* 2. INSERT FRIEND */
     $insert = $c->prepare("INSERT INTO my_friends (nrp) VALUES (?)");
     $insert->bind_param("s", $nrp);
     $insert->execute();
     $insert->close();
 
+    /* 3. HITUNG TOTAL FRIEND */
     $count = $c->query("SELECT COUNT(*) AS total FROM my_friends");
     $row = $count->fetch_assoc();
 

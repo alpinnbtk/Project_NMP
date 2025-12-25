@@ -13,7 +13,7 @@
     }
 
     $c->set_charset("UTF8");
-	$sql = "SELECT * FROM my_friends";
+	$sql = "SELECT * FROM student s inner join my_friends mf on s.nrp=mf.nrp ";
     $stmt = $c->prepare($sql);
     $stmt->execute();
     $result =$stmt->get_result();
