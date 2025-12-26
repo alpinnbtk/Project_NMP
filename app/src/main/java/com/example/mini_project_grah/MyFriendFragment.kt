@@ -64,30 +64,36 @@
             val request = JsonObjectRequest(
                 Request.Method.GET, url, null,
                 { response ->
-                    val data = response.getJSONArray("data")
-                    listMahasiswa.clear()
+                    try {
+                        if (response.has("data")) {
+                            val data = response.getJSONArray("data")
+                            listMahasiswa.clear()
 
-                    for (i in 0 until data.length()) {
-                        val obj = data.getJSONObject(i)
-                        listMahasiswa.add(
-                            mahasiswa(
-                                obj.getString("nama"),
-                                obj.getString("nrp"),
-                                obj.getString("program"),
-                                obj.getString("photo_url")
-                            )
-                        )
+                            for (i in 0 until data.length()) {
+                                val obj = data.getJSONObject(i)
+                                listMahasiswa.add(
+                                    mahasiswa(
+                                        obj.getString("nama"),
+                                        obj.getString("nrp"),
+                                        obj.getString("program"),
+                                        obj.getString("photo_url")
+                                    )
+                                )
+                            }
+                            adapter.notifyDataSetChanged()
+                        } else {
+                            listMahasiswa.clear()
+                            adapter.notifyDataSetChanged()
+                            Log.d("DATA", "Data kosong setelah reset")
+                        }
+                    } catch (e: Exception) {
+                        Log.e("API", "Error parsing JSON: ${e.message}")
                     }
-
-                    Log.d("DATA", "Jumlah mahasiswa: ${listMahasiswa.size}")
-                    adapter.notifyDataSetChanged()
                 },
                 { error ->
                     Log.e("API", "Gagal ambil data", error)
                 }
             )
-
             Volley.newRequestQueue(requireContext()).add(request)
         }
-
     }
