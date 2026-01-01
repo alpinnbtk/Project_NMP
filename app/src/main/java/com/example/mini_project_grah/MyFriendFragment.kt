@@ -30,8 +30,6 @@
         private val listMahasiswa = ArrayList<mahasiswa>()
 
 
-
-
         override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
@@ -75,6 +73,7 @@
                                     mahasiswa(
                                         obj.getString("nama"),
                                         obj.getString("nrp"),
+                                        obj.getString("email"),
                                         obj.getString("program"),
                                         obj.getString("photo_url")
                                     )

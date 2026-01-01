@@ -56,6 +56,7 @@ class HomeFragment : Fragment() {
                         mahasiswa(
                             obj.getString("nama"),
                             obj.getString("nrp"),
+                            obj.getString("email"),
                             obj.getString("program"),   
                             obj.getString("photo_url")
                         )

@@ -55,6 +55,19 @@ class MahasiswaAdapter(
             holder.itemView.context.startActivity(intent)
         }
 
+        holder.binding.btnEmail.setOnClickListener {
+            val sendIntent : Intent = Intent()
+            sendIntent.action = Intent.ACTION_SEND
+
+//            sendIntent.type = "text/plain"
+            sendIntent.type = "message/rfc822"
+            sendIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(mhs.email))
+
+            val shareIntent = Intent.createChooser(sendIntent, "Send My Text")
+
+            holder.itemView.context.startActivity(shareIntent)
+        }
+
         if (showEmail) {
             holder.binding.btnEmail.visibility = View.VISIBLE
         } else {
