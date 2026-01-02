@@ -54,6 +54,10 @@
 
             loadFriends()
         }
+        override fun onResume() {
+            super.onResume()
+            loadFriends()
+        }
 
 
         private fun loadFriends() {

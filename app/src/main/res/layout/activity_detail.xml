@@ -153,9 +153,10 @@
                 android:background="@null"
                 android:padding="0dp"
                 android:scaleType="fitCenter"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/back_button" />
+                app:srcCompat="@drawable/back_button"
+                app:tint="?attr/colorOnSurface"
+                tools:ignore="MissingConstraints" />
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

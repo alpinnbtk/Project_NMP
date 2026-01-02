@@ -41,6 +41,7 @@ class HomeFragment : Fragment() {
         loadMahasiswa()
     }
 
+
     private fun loadMahasiswa() {
         val url = "http://10.0.2.2/project_nmp/get_all_student.php"
 
