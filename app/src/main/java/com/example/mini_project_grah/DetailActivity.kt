@@ -96,6 +96,15 @@ class DetailActivity : AppCompatActivity() {
                     binding.txtJurusanDetail.text = "Jurusan : ${obj.getString("program")}"
 
                     val program = obj.getString("program")
+
+                    val isFriend = obj.getInt("is_friend") == 1
+
+                    if (isFriend) {
+                        binding.btnRequest.isEnabled = false
+                        binding.btnRequest.text = "Already Friend"
+                    }
+
+
                     when (program) {
                         "DSAI" -> binding.rdoDSAI.isChecked = true
                         "NCS" -> binding.rdoNCS.isChecked = true
@@ -181,8 +190,6 @@ class DetailActivity : AppCompatActivity() {
         Volley.newRequestQueue(this).add(request)
     }
 
-
-
     private fun showDialog(title: String, message: String) {
         AlertDialog.Builder(this)
             .setTitle(title)
@@ -191,5 +198,20 @@ class DetailActivity : AppCompatActivity() {
             .show()
     }
 
+    private fun checkFriendStatus(nrp: String) {
+        val url = "http://10.0.2.2/project_nmp/insert_friend.php?nrp=$nrp&mode=check"
+
+        val request = JsonObjectRequest(Request.Method.GET, url, null,
+            { response ->
+                if (response.optString("result") == "ALREADY") {
+                    binding.btnRequest.isEnabled = false
+                    binding.btnRequest.text = "Already Friend"
+                }
+            },
+            { }
+        )
+
+        Volley.newRequestQueue(this).add(request)
+    }
 
 }
